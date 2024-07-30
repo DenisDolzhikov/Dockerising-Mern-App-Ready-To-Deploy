@@ -1,0 +1,78 @@
+services:
+  mongo:
+    container_name: docker-mern-mongo
+    image: mongo:latest
+    env_file:
+      - ./.env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    # build:
+    #   context: ./database
+    # container_name: docker-mern-mongo
+    expose:
+      - 27017
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+    networks:
+      - backend
+      
+  backend:
+    container_name: docker-mern-backend
+    build:
+      context: ./backend
+    # ports:
+    #   - "5000:80"
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - mongo
+    restart: always
+    networks:
+      - backend
+      - frontend
+
+  frontend:
+    container_name: docker-mern-frontend-by-nginx
+    build:
+      context: ./frontend
+    environment:
+      - VITE_SERVER_ENDPOINT=http://localhost:5000
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./frontend:/usr/src/frontend
+      - frontend_node_modules:/usr/src/frontend/node_modules/
+      - /tmp/acme-challenge:/tmp/acme-challenge
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - frontend
+
+  letsencrypt:
+    container_name: certbot
+    image: certbot/certbot
+    # в нижней команде указываем свой домен и адрес электронной почты
+    command: sh -c "certbot certonly --webroot -w /tmp/acme-challenge/ -d your-domanin.com --text --agree-tos --email your-email@email.com --rsa-key-size 4096 --verbose --keep-until-expiring --preferred-challenges=http"
+    entrypoint: ""
+    volumes:
+      - "/etc/letsencrypt:/etc/letsencrypt"
+      - "/tmp/acme-challenge:/tmp/acme-challenge"
+    environment:
+      - TERM=xterm
+
+volumes:
+  mongo_data:
+  frontend_node_modules:
+
+networks:
+  backend:
+  frontend:

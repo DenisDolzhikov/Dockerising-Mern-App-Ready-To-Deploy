@@ -1,0 +1,6 @@
+node_modules
+dist
+.vs
+.vscode
+# Keep environment variables out of version control
+# .env
