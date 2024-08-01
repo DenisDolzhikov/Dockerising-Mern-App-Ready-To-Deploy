@@ -64,7 +64,7 @@ services:
       - 443:433
     volumes:
       - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
-      - "./etc/letsencrypt:/etc/letsencrypt"
+      - '/etc/letsencrypt:/etc/letsencrypt'
     depends_on:
       - mongo
       - backend
