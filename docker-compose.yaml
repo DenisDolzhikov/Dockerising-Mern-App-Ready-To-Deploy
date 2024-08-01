@@ -25,8 +25,6 @@ services:
     container_name: docker-mern-backend
     build:
       context: ./backend
-    # ports:
-    #   - "5000:80"
     ports:
       - "5000:5000"
     environment:
@@ -41,15 +39,9 @@ services:
     container_name: docker-mern-frontend
     build:
       context: ./frontend
-    # environment:
-    #   - VITE_SERVER_ENDPOINT=http://localhost:5000
-    # ports:
-    #   - "80:80"
-    #   - "443:443"
     volumes:
       - ./frontend:/usr/src/frontend
       - frontend_node_modules:/usr/src/frontend/node_modules/
-      # - /tmp/acme-challenge:/tmp/acme-challenge
     depends_on:
       - backend
     restart: always
@@ -72,18 +64,6 @@ services:
     restart: always
     networks:
       - app
-
-  # letsencrypt:
-  #   container_name: certbot
-  #   image: certbot/certbot
-  #   # в нижней команде указываем свой домен и адрес электронной почты
-  #   command: sh -c "certbot certonly --webroot -w /tmp/acme-challenge/ -d your-domanin.com --text --agree-tos --email your-email@email.com --rsa-key-size 4096 --verbose --keep-until-expiring --preferred-challenges=http"
-  #   entrypoint: ""
-  #   volumes:
-  #     - "/etc/letsencrypt:/etc/letsencrypt"
-  #     - "/tmp/acme-challenge:/tmp/acme-challenge"
-  #   environment:
-  #     - TERM=xterm
 
 volumes:
   mongo_data:
