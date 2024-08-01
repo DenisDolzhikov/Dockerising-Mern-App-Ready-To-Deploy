@@ -38,7 +38,7 @@ services:
       - app
 
   frontend:
-    container_name: docker-mern-frontend-by-nginx
+    container_name: docker-mern-frontend
     build:
       context: ./frontend
     # environment:
