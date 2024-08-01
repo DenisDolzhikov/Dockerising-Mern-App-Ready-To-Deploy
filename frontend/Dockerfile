@@ -1,6 +1,6 @@
 FROM node:22-alpine3.19 AS build-stage
 WORKDIR /usr/src/frontend
-ENV VITE_SERVER_ENDPOINT=http://localhost:5000
+# ENV VITE_SERVER_ENDPOINT=http://localhost:5000
 COPY package*.json ./
 RUN yarn
 COPY . .
