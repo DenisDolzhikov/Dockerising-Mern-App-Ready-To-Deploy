@@ -7,7 +7,7 @@ COPY . .
 RUN yarn run build
 
 FROM nginx:stable-alpine
-COPY --from=build-stage /usr/src/frontend/dist /usr/share/nginx/html
+COPY --from=build-stage /dist /usr/share/nginx/html
 COPY --from=build-stage /nginx/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
