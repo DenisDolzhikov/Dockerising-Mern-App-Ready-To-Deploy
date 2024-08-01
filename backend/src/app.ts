@@ -34,7 +34,12 @@ if (process.env.NODE_ENV === 'development') {
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:3000'],
+    origin: [
+      'http://localhost:3000',
+      'http://147.45.175.126',
+      'http://denisdolzhikovtest.ru',
+      'https://denisdolzhikovtest.ru',
+    ],
   })
 );
 
